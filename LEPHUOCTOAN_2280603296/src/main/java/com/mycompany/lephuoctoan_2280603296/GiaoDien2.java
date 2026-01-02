@@ -7,6 +7,11 @@ package com.mycompany.lephuoctoan_2280603296;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +31,12 @@ public class GiaoDien2 extends javax.swing.JFrame {
     private JTextArea txtLog;
     private List<Cau2.Employee> employees;
 
-    /**
-     * Creates new form GiaoDien2
-     */
+    DefaultTableModel model;
     public GiaoDien2() {
         employees = new ArrayList<>();
         initComponents();
+        model = (javax.swing.table.DefaultTableModel) tblNhanVien.getModel();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -42,78 +47,198 @@ public class GiaoDien2 extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        setTitle("Cau 2: Quan Ly Nhan Vien - Xuat CSV");
-        setSize(800, 600);
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtID = new javax.swing.JTextField();
+        txtTen = new javax.swing.JTextField();
+        txtLuong = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblNhanVien = new javax.swing.JTable();
+        btnThem = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
+        btnXuatFile = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
-        // Top panel - Input form
-        JPanel topPanel = new JPanel(new GridBagLayout());
-        topPanel.setBorder(BorderFactory.createTitledBorder("Nhap thong tin nhan vien"));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
-        topPanel.add(new JLabel("ID:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 1;
-        txtId = new JTextField(20);
-        topPanel.add(txtId, gbc);
-        
-        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
-        topPanel.add(new JLabel("Ho Ten:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 1;
-        txtName = new JTextField(20);
-        topPanel.add(txtName, gbc);
-        
-        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0;
-        topPanel.add(new JLabel("Luong:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 1;
-        txtSalary = new JTextField(20);
-        topPanel.add(txtSalary, gbc);
-        
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
-        JPanel btnPanel = new JPanel(new FlowLayout());
-        btnAdd = new JButton("Them Nhan Vien");
-        btnAdd.addActionListener(e -> addEmployee());
-        btnPanel.add(btnAdd);
-        btnClear = new JButton("Xoa Danh Sach");
-        btnClear.addActionListener(e -> clearTable());
-        btnPanel.add(btnClear);
-        topPanel.add(btnPanel, gbc);
-        mainPanel.add(topPanel, BorderLayout.NORTH);
-        
-        // Center panel - Table
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBorder(BorderFactory.createTitledBorder("Danh sach nhan vien"));
-        String[] columns = {"ID", "Ho Ten", "Luong"};
-        tableModel = new DefaultTableModel(columns, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) { return false; }
-        };
-        table = new JTable(tableModel);
-        centerPanel.add(new JScrollPane(table), BorderLayout.CENTER);
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
-        
-        // Bottom panel
-        JPanel bottomPanel = new JPanel(new BorderLayout(5, 5));
-        txtLog = new JTextArea(4, 50);
-        txtLog.setEditable(false);
-        txtLog.setFont(new Font("Monospaced", Font.PLAIN, 11));
-        JScrollPane logScroll = new JScrollPane(txtLog);
-        logScroll.setBorder(BorderFactory.createTitledBorder("Ket qua"));
-        bottomPanel.add(logScroll, BorderLayout.CENTER);
-        JPanel savePanel = new JPanel();
-        btnSave = new JButton("Luu File CSV");
-        btnSave.addActionListener(e -> saveToCSV());
-        savePanel.add(btnSave);
-        bottomPanel.add(savePanel, BorderLayout.SOUTH);
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-        add(mainPanel);
+
+        jLabel1.setText("Mã nhân viên:");
+
+        jLabel2.setText("Họ Tên:");
+
+        jLabel3.setText("Lương:");
+
+        tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Họ Tên", "Lương"
+            }
+        ));
+        jScrollPane1.setViewportView(tblNhanVien);
+
+        btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
+
+        btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
+
+        btnXuatFile.setText("Xuất file");
+        btnXuatFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatFileActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtID)
+                    .addComponent(txtTen)
+                    .addComponent(txtLuong))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnThem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnXoa))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnXuatFile)
+                .addGap(183, 183, 183))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnThem)
+                    .addComponent(btnXoa))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnXuatFile)
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        String id = txtID.getText().trim();
+        String ten = txtTen.getText().trim();
+        String luongStr = txtLuong.getText().trim();
+
+     
+        if (id.isEmpty() || ten.isEmpty() || luongStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        try {
+         
+            double luong = Double.parseDouble(luongStr);
+            
+          
+            model.addRow(new Object[]{id, ten, luong});
+            
+           
+            txtID.setText("");
+            txtTen.setText("");
+            txtLuong.setText("");
+            txtID.requestFocus(); 
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Lương phải là số!");
+        }
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int row = tblNhanVien.getSelectedRow();
+        if (row >= 0) {
+            model.removeRow(row);
+        } else {
+            JOptionPane.showMessageDialog(this, "Hãy chọn dòng cần xóa!");
+        }
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnXuatFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatFileActionPerformed
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Danh sách đang trống!");
+            return;
+        }
+
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Lưu file CSV");
+        fc.setSelectedFile(new File("employee.csv")); // Gợi ý tên mặc định
+
+        int result = fc.showSaveDialog(this);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fc.getSelectedFile();
+            
+      
+            if (!fileToSave.getName().toLowerCase().endsWith(".csv")) {
+                fileToSave = new File(fileToSave.getParentFile(), fileToSave.getName() + ".csv");
+            }
+
+            try (PrintWriter pw = new PrintWriter(
+                    new OutputStreamWriter(new FileOutputStream(fileToSave), StandardCharsets.UTF_8))) {
+                
+                pw.write('\ufeff'); 
+                pw.println("ID,Họ Tên,Lương");
+
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    String id = model.getValueAt(i, 0).toString();
+                    String ten = model.getValueAt(i, 1).toString();
+                    String luong = model.getValueAt(i, 2).toString();
+                    
+                    pw.println(id + "," + ten + "," + luong);
+                }
+                
+                JOptionPane.showMessageDialog(this, 
+                        "Xuất file thành công!\nĐường dẫn: " + fileToSave.getAbsolutePath());
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi ghi file: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnXuatFileActionPerformed
     
     private void addEmployee() {
         String id = txtId.getText().trim();
@@ -188,5 +313,16 @@ public class GiaoDien2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnThem;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuatFile;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblNhanVien;
+    private javax.swing.JTextField txtID;
+    private javax.swing.JTextField txtLuong;
+    private javax.swing.JTextField txtTen;
     // End of variables declaration//GEN-END:variables
 }

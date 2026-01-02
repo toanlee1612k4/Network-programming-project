@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -38,86 +41,142 @@ public class GiaoDIen1 extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        setTitle("Cau 1: Xu Ly Tep Tin Nhi Phan");
-        setSize(700, 500);
+
+        btnChonFile = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtCount = new javax.swing.JTextField();
+        lblImage = new javax.swing.JLabel();
+        txtPath = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        
-        // Main panel
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
-        // Top panel - Input fields
-        JPanel topPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        
-        // Source file
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
-        topPanel.add(new JLabel("File nguon:"), gbc);
-        
-        gbc.gridx = 1; gbc.weightx = 1;
-        txtSourceFile = new JTextField(30);
-        topPanel.add(txtSourceFile, gbc);
-        
-        gbc.gridx = 2; gbc.weightx = 0;
-        btnBrowse = new JButton("Chon File");
-        btnBrowse.addActionListener(e -> browseFile());
-        topPanel.add(btnBrowse, gbc);
-        
-        // Destination file
-        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
-        topPanel.add(new JLabel("File dich:"), gbc);
-        
-        gbc.gridx = 1; gbc.weightx = 1; gbc.gridwidth = 2;
-        txtDestFile = new JTextField("reconstructed.jpg");
-        topPanel.add(txtDestFile, gbc);
-        
-        // Chunk size
-        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0; gbc.gridwidth = 1;
-        topPanel.add(new JLabel("Kich thuoc moi doan (byte):"), gbc);
-        
-        gbc.gridx = 1; gbc.weightx = 1; gbc.gridwidth = 2;
-        txtChunkSize = new JTextField("100");
-        topPanel.add(txtChunkSize, gbc);
-        
-        mainPanel.add(topPanel, BorderLayout.NORTH);
-        
-        // Center panel - Log area
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBorder(BorderFactory.createTitledBorder("Ket qua xu ly"));
-        
-        txtLog = new JTextArea();
-        txtLog.setEditable(false);
-        txtLog.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        JScrollPane scrollPane = new JScrollPane(txtLog);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
-        
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
-        
-        // Bottom panel - Buttons
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        
-        btnProcess = new JButton("Xu Ly File");
-        btnProcess.addActionListener(e -> processFile());
-        bottomPanel.add(btnProcess);
-        
-        btnClear = new JButton("Xoa Log");
-        btnClear.addActionListener(e -> txtLog.setText(""));
-        bottomPanel.add(btnClear);
-        
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-        
-        add(mainPanel);
+
+        btnChonFile.setText("Chon FIle");
+        btnChonFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChonFileActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel1.setText("Số file đã tách:");
+
+        txtCount.setEditable(false);
+
+        lblImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtPath)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnChonFile))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCount, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnChonFile)
+                    .addComponent(txtPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35))
+        );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnChonFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonFileActionPerformed
+     JFileChooser fc = new JFileChooser();
+    fc.setDialogTitle("Chọn file ảnh để tách và ghép");
+    fc.setFileFilter(new FileNameExtensionFilter("Hình ảnh (JPG, PNG)", "jpg", "png", "jpeg"));
+
+    int result = fc.showOpenDialog(this);
+    if (result != JFileChooser.APPROVE_OPTION) return;
+
+    File sourceFile = fc.getSelectedFile();
+    txtPath.setText(sourceFile.getAbsolutePath());
+    new Thread(() -> {
+        try {
+            java.util.List<String> partFiles = new ArrayList<>();
+            int chunkSize = 100;
+            byte[] buffer = new byte[chunkSize];
+
+            try (FileInputStream fis = new FileInputStream(sourceFile)) {
+                int bytesRead;
+                int partCounter = 1;
+                while ((bytesRead = fis.read(buffer)) > 0) {
+                    String partName = "part_" + partCounter + ".dat";
+                    try (FileOutputStream fos = new FileOutputStream(partName)) {
+                        fos.write(buffer, 0, bytesRead);
+                    }
+                    partFiles.add(partName);
+                    partCounter++;
+                }
+            }
+            int totalParts = partFiles.size();
+            SwingUtilities.invokeLater(() -> {
+                txtCount.setText(String.valueOf(totalParts));
+            });
+
+            String destName = "reconstructed_" + sourceFile.getName();
+            
+            try (FileOutputStream fos = new FileOutputStream(destName)) {
+                for (String part : partFiles) {
+                    try (FileInputStream fis = new FileInputStream(part)) {
+                        int bytesRead;
+                        while ((bytesRead = fis.read(buffer)) > 0) {
+                            fos.write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            }
+
+           
+            File resultFile = new File(destName);
+            if (resultFile.exists()) {
+       
+                ImageIcon icon = new ImageIcon(resultFile.getAbsolutePath());
+                
+               
+                Image img = icon.getImage();
+                Image scaledImg = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
+                ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+               
+                SwingUtilities.invokeLater(() -> {
+                    lblImage.setIcon(scaledIcon);
+                    JOptionPane.showMessageDialog(this, "Đã xử lý xong! Ảnh đã được khôi phục.");
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage()));
+        }
+    }).start();
+    }//GEN-LAST:event_btnChonFileActionPerformed
     
     private void browseFile() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chon file JPG hoac PDF");
         
-        // Filter for JPG and PDF files
+      
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
             "JPG & PDF files", "jpg", "jpeg", "pdf");
         fileChooser.setFileFilter(filter);
@@ -127,7 +186,7 @@ public class GiaoDIen1 extends javax.swing.JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             txtSourceFile.setText(selectedFile.getAbsolutePath());
             
-            // Auto-set destination file name
+         
             String fileName = selectedFile.getName();
             String extension = fileName.substring(fileName.lastIndexOf("."));
             txtDestFile.setText("reconstructed" + extension);
@@ -219,6 +278,11 @@ public class GiaoDIen1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChonFile;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblImage;
+    private javax.swing.JTextField txtCount;
+    private javax.swing.JTextField txtPath;
     // End of variables declaration//GEN-END:variables
 }
 
