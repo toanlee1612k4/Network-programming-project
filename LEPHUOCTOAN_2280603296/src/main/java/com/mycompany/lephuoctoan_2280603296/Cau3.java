@@ -23,6 +23,7 @@ class TicketSeller extends Thread {
 
     @Override
     public void run() {
+        
         for (int i = 0; i < 100; i++) { 
             counter.sellTicket(this.getName());
         }
